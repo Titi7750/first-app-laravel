@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Validation\Rules\Password;
+use Illuminate\Support\Facades\Hash;
 
 class UsersController extends Controller
 {
@@ -40,6 +41,8 @@ class UsersController extends Controller
             'password' => ['required', 'confirmed', Password::min(8), Password::min(8)->letters(), Password::min(8)->mixedCase(), Password::min(8)->numbers(), Password::min(8)->symbols()],
             'birthday' => ['required', 'date'],
         ]);
+        
+        $validated['password'] = Hash::make($validated['password']);
 
         User::whereId($id)->update($validated);
 
@@ -59,6 +62,8 @@ class UsersController extends Controller
             'password' => ['required', 'confirmed', Password::min(8), Password::min(8)->letters(), Password::min(8)->mixedCase(), Password::min(8)->numbers(), Password::min(8)->symbols()],
             'birthday' => ['required', 'date'],
         ]);
+
+        $validated['password'] = Hash::make($validated['password']);
 
         User::create($validated);
 
